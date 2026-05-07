@@ -368,6 +368,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1 &339550526
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 339550527}
+  m_Layer: 0
+  m_Name: Muzzle_R
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &339550527
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 339550526}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.00419, y: 0, z: 0.00592}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 681503852}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &386661658
 GameObject:
   m_ObjectHideFlags: 0
@@ -1081,7 +1112,7 @@ Transform:
   m_GameObject: {fileID: 605188919}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.3190255, y: -0.42060223, z: 28.33482}
+  m_LocalPosition: {x: 0.24, y: -0.63, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1116,8 +1147,9 @@ MonoBehaviour:
   damage: 10
   fireRate: 0.3
   range: 100
-  bulletPrefab: {fileID: 0}
-  firePoint: {fileID: 0}
+  bulletPrefab: {fileID: 1440351410546892847, guid: 4979a47bb729848c7b2f8f5390ac93f4,
+    type: 3}
+  firePoint: {fileID: 339550527}
   triggerAction: {fileID: 0}
   recoilAmount: 0.05
   recoilSpeed: 10
@@ -1761,27 +1793,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1590154160}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &946875903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 946875899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84717ca7bbfc948d5930ba0bd9cb0d67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletSpeed: 50
-  damage: 10
-  fireRate: 0.3
-  range: 100
-  bulletPrefab: {fileID: 0}
-  firePoint: {fileID: 0}
-  triggerAction: {fileID: 0}
-  recoilAmount: 0.05
-  recoilSpeed: 10
 --- !u!114 &946875904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1798,8 +1809,9 @@ MonoBehaviour:
   damage: 10
   fireRate: 0.3
   range: 100
-  bulletPrefab: {fileID: 0}
-  firePoint: {fileID: 0}
+  bulletPrefab: {fileID: 1440351410546892847, guid: 4979a47bb729848c7b2f8f5390ac93f4,
+    type: 3}
+  firePoint: {fileID: 2138242256}
   triggerAction: {fileID: 0}
   recoilAmount: 0.05
   recoilSpeed: 10
@@ -2120,7 +2132,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: e020e7ddb10da4396bbf6224e20934c5,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 339550527}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e020e7ddb10da4396bbf6224e20934c5,
         type: 3}
@@ -2197,16 +2213,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d03273dfbadd6422b925b6b78525a7aa,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2138242256}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d03273dfbadd6422b925b6b78525a7aa,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 946875904}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d03273dfbadd6422b925b6b78525a7aa,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 946875903}
   m_SourcePrefab: {fileID: 100100000, guid: d03273dfbadd6422b925b6b78525a7aa, type: 3}
 --- !u!1 &1767666333
 GameObject:
@@ -2644,6 +2660,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.940733, y: 1.9992683, z: 2.0177472}
   m_Center: {x: -0.0021036863, y: 0.004497289, z: 0.021513281}
+--- !u!1 &2138242255
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2138242256}
+  m_Layer: 0
+  m_Name: Muzzle_L
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2138242256
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2138242255}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.0003, y: -0, z: 0.006}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 946875900}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
