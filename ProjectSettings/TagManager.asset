@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Virus
   - Orb
+  - Enemy
   layers:
   - Default
   - TransparentFX
