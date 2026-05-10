@@ -1150,7 +1150,8 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1440351410546892847, guid: 4979a47bb729848c7b2f8f5390ac93f4,
     type: 3}
   firePoint: {fileID: 339550527}
-  triggerAction: {fileID: 0}
+  triggerAction: {fileID: 83097790271614945, guid: c348712bda248c246b8c49b3db54643f,
+    type: 3}
   recoilAmount: 0.05
   recoilSpeed: 10
 --- !u!1 &838394733
@@ -1812,7 +1813,8 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1440351410546892847, guid: 4979a47bb729848c7b2f8f5390ac93f4,
     type: 3}
   firePoint: {fileID: 2138242256}
-  triggerAction: {fileID: 0}
+  triggerAction: {fileID: -5982496924579745919, guid: c348712bda248c246b8c49b3db54643f,
+    type: 3}
   recoilAmount: 0.05
   recoilSpeed: 10
 --- !u!1 &1002088277
