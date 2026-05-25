@@ -1,26 +1,30 @@
 using UnityEngine;
+using TMPro; // <--- ¡IMPORTANTE! Añadimos la librería de TextMeshPro
 
 public class PlayerHealth : MonoBehaviour
 {
     [Header("Estadísticas")]
     public int vidas = 3;
 
-    // Referencia opcional al script de movimiento para detenerlo al morir
+    [Header("Interfaz Visual")]
+    public TextMeshPro textoVidas; // Arrastra aquí el objeto HUD_Vidas
+
     private AutoForwardMovement movimiento;
 
     void Start()
     {
-        // Busca el script de movimiento en el XR Origin (padre de la cámara)
         movimiento = GetComponentInParent<AutoForwardMovement>();
+        
+        // Al empezar, actualizamos el texto por primera vez
+        ActualizarInterfaz();
     }
 
     public void RecibirDano()
     {
-        vidas--;
-        Debug.Log("¡Impacto del virus! Vidas restantes: " + vidas);
+        if (vidas <= 0) return; // Evita que baje de 0 si ya moriste
 
-        // Feedback visual burdo: Pintar la pantalla de rojo en la consola
-        Debug.LogWarning("🔴 PANTALLAZO ROJO (Marcador visual burdo) 🔴");
+        vidas--;
+        ActualizarInterfaz();
 
         if (vidas <= 0)
         {
@@ -28,16 +32,28 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    void ActualizarInterfaz()
+    {
+        if (textoVidas != null)
+        {
+            textoVidas.text = "Vidas: " + vidas;
+            
+            // Un toque extra: Si le queda 1 vida, poner el texto en rojo
+            if (vidas == 1) 
+                textoVidas.color = Color.red;
+            else 
+                textoVidas.color = Color.white;
+        }
+    }
+
     void Morir()
     {
-        Debug.LogError("💀 ¡GAME OVER! Te quedaste sin vidas. 💀");
+        if (textoVidas != null) textoVidas.text = "GAME OVER";
         
-        // Detenemos el avance del jugador
         if (movimiento != null)
         {
             movimiento.StopMovement();
         }
-
-        // Aquí podrías recargar la escena más adelante
+        Debug.LogError("💀 GAME OVER");
     }
 }
