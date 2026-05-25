@@ -48,18 +48,29 @@ public class VirusAI : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // Si nos toca algo con el tag "Bullet"
+        // 1. Si nos pega una bala
         if (other.CompareTag("Bullet"))
         {
-            // ¡Aquí ocurre la magia de la colaboración!
-            // Llamamos a la función de tu compañero
             if (healthSystem != null)
             {
                 healthSystem.TakeDamage(10f); 
             }
-            
-            // Destruimos la bala
             Destroy(other.gameObject);
+        }
+
+        // 2. Si chocamos con el jugador (¡NUEVO!)
+        if (other.CompareTag("Player"))
+        {
+            // Buscamos el script de vida en el jugador
+            PlayerHealth saludJugador = other.GetComponent<PlayerHealth>();
+            
+            if (saludJugador != null)
+            {
+                saludJugador.RecibirDano();
+            }
+
+            // Destruimos el virus (Si no lo destruyes, chocará 60 veces por segundo y te matará al instante)
+            Destroy(gameObject);
         }
     }
 }
