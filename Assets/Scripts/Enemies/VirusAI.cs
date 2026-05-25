@@ -3,22 +3,29 @@ using UnityEngine;
 public class VirusAI : MonoBehaviour
 {
     [Header("Referencias")]
-    public Transform player;         // El jugador a perseguir
-    private EnemyHealth healthSystem; // El script de tu compañero
+    public Transform player;
+    private EnemyHealth healthSystem;
 
     [Header("Movimiento")]
-    public float speed = 3f;
-    public float stoppingDistance = 1.5f;
+    [Tooltip("ESTA VELOCIDAD DEBE SER MAYOR A LA DEL JUGADOR")]
+    public float speed = 20f; 
 
-    void Start()
+   void Start()
     {
-        // Buscamos el script de salud que está en este mismo objeto
         healthSystem = GetComponent<EnemyHealth>();
         
-        // Si no has asignado al jugador manualmente, buscamos la cámara principal
-        if (player == null && Camera.main != null)
+        // Buscamos al jugador por el tag que le pusimos para las colisiones
+        if (player == null)
         {
-            player = Camera.main.transform;
+            GameObject jugadorEncontrado = GameObject.FindGameObjectWithTag("Player");
+            if (jugadorEncontrado != null)
+            {
+                player = jugadorEncontrado.transform;
+            }
+            else
+            {
+                Debug.LogError("¡No se ha encontrado ningún objeto con el tag 'Player'!");
+            }
         }
     }
 
@@ -26,50 +33,27 @@ public class VirusAI : MonoBehaviour
     {
         if (player != null)
         {
-            MoverHaciaJugador();
+            // 1. Miramos a la cámara
+            transform.LookAt(player);
+
+            // 2. Volamos directos hacia ella. 
+            // Como ya es Kinematic, nada va a frenar este movimiento.
+            transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
         }
     }
-
-    void MoverHaciaJugador()
-    {
-        float distance = Vector3.Distance(transform.position, player.position);
-
-        if (distance > stoppingDistance)
-        {
-            // Rotar suavemente hacia el jugador
-            Vector3 direction = (player.position - transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
-
-            // Avanzar
-            transform.position += direction * speed * Time.deltaTime;
-        }
-    }
-
+    
     private void OnTriggerEnter(Collider other)
     {
-        // 1. Si nos pega una bala
         if (other.CompareTag("Bullet"))
         {
-            if (healthSystem != null)
-            {
-                healthSystem.TakeDamage(10f); 
-            }
+            if (healthSystem != null) healthSystem.TakeDamage(10f); 
             Destroy(other.gameObject);
         }
 
-        // 2. Si chocamos con el jugador (¡NUEVO!)
         if (other.CompareTag("Player"))
         {
-            // Buscamos el script de vida en el jugador
             PlayerHealth saludJugador = other.GetComponent<PlayerHealth>();
-            
-            if (saludJugador != null)
-            {
-                saludJugador.RecibirDano();
-            }
-
-            // Destruimos el virus (Si no lo destruyes, chocará 60 veces por segundo y te matará al instante)
+            if (saludJugador != null) saludJugador.RecibirDano();
             Destroy(gameObject);
         }
     }

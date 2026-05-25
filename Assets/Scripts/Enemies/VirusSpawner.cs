@@ -41,6 +41,6 @@ public class VirusSpawner : MonoBehaviour
         spawnPos += (transform.right * randomCircle.x) + (transform.up * randomCircle.y);
 
         // 4. Creamos el virus en esa posición
-        Instantiate(virusPrefab, spawnPos, Quaternion.identity);
+      Instantiate(virusPrefab, spawnPos, Quaternion.identity);
     }
 }
