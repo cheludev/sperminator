@@ -1,8 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// Add this script to any enemy (ETS) in the scene.
-/// When shot, it loses health and dies when health reaches 0.
+/// Añade este script a cada enemigo (ETS) de la escena.
+/// Cuando lo matan, suma puntos al GameManager.
 /// </summary>
 public class EnemyHealth : MonoBehaviour
 {
@@ -18,7 +18,7 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
-        Debug.Log(gameObject.name + " hit! Health: " + currentHealth);
+        Debug.Log(gameObject.name + " hit! Vida: " + currentHealth);
 
         if (currentHealth <= 0)
         {
@@ -28,9 +28,13 @@ public class EnemyHealth : MonoBehaviour
 
     void Die()
     {
-        Debug.Log(gameObject.name + " destroyed! +" + scoreValue + " points");
-        // TODO: Add score to GameManager
-        // TODO: Add explosion/death effect
+        // Suma puntos al GameManager
+        if (GameManager.Instance != null)
+            GameManager.Instance.AddScore(scoreValue);
+
+        Debug.Log(gameObject.name + " eliminada! +" + scoreValue + " puntos");
+
+        // TODO: Añadir efecto de muerte (partículas, sonido, etc.)
         Destroy(gameObject);
     }
 }
