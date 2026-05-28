@@ -40,7 +40,7 @@ public class EndScreenUI : MonoBehaviour
     public void PlayAgain()
     {
         GameManager.Instance.ResetScore();
-        SceneManager.LoadScene("MainGame"); // Cambia por el nombre real de tu escena
+        SceneManager.LoadScene("Game"); // Nombre correcto de la escena principal
     }
 
     // Llama a este método desde el botón "Salir"

@@ -1,14 +1,15 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 /// <summary>
+/// Gestiona el disparo desde un brazo (Arm_L o Arm_R).
+/// Usa OVRInput directamente — compatible con Meta SDK / OVR Camera Rig.
+///
 /// HOW TO USE:
-/// 1. Drag this script into Assets/Scripts/Shooting
-/// 2. Add this script to both Arm_L and Arm_R
-/// 3. In the Inspector, assign the Trigger Action:
-///    - For Arm_L: XRI LeftHand > Activate (or trigger)
-///    - For Arm_R: XRI RightHand > Activate (or trigger)
-/// 4. Set bulletSpeed and damage as you like
+/// 1. Añade este script a Arm_L y a Arm_R en el Inspector.
+/// 2. En Arm_L: marca la casilla "Is Left Hand" en el Inspector.
+///    En Arm_R: déjala desmarcada (mano derecha por defecto).
+/// 3. Asigna "Bullet Prefab" (PlasmaBullet) y "Fire Point" (Muzzle_L / Muzzle_R).
+/// 4. Ajusta "Bullet Speed", "Damage" y "Fire Rate" según gustos.
 /// </summary>
 public class ShootGun : MonoBehaviour
 {
@@ -18,12 +19,14 @@ public class ShootGun : MonoBehaviour
     public float fireRate = 0.3f;
     public float range = 100f;
 
-    [Header("Bullet (optional)")]
+    [Header("Bullet")]
     public GameObject bulletPrefab;
     public Transform firePoint;
 
-    [Header("Input")]
-    public InputActionReference triggerAction;
+    [Header("Controller")]
+    [Tooltip("Marca esta casilla en el Inspector para el brazo IZQUIERDO (Arm_L). " +
+             "Desmarca para el brazo DERECHO (Arm_R).")]
+    public bool isLeftHand = false;
 
     [Header("Recoil Animation")]
     public float recoilAmount = 0.05f;
@@ -33,21 +36,21 @@ public class ShootGun : MonoBehaviour
     private Vector3 originalPosition;
     private bool isRecoiling = false;
     private float recoilTimer = 0f;
+    private OVRInput.Controller activeController;
 
     void Start()
     {
         originalPosition = transform.localPosition;
 
-        if (triggerAction != null)
-        {
-            triggerAction.action.Enable();
-        }
+        // Selecciona el controller según qué mano es este brazo
+        activeController = isLeftHand ? OVRInput.Controller.LTouch : OVRInput.Controller.RTouch;
     }
 
     void Update()
     {
-        // Check trigger input
-        if (triggerAction != null && triggerAction.action.WasPressedThisFrame())
+        // Detecta el trigger del controller correspondiente con OVRInput
+        if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, activeController) 
+    || Input.GetMouseButtonDown(0))
         {
             if (Time.time >= nextFireTime)
             {
@@ -56,22 +59,26 @@ public class ShootGun : MonoBehaviour
             }
         }
 
-        // Recoil animation
+        // Animación de retroceso (recoil)
         if (isRecoiling)
         {
             recoilTimer += Time.deltaTime * recoilSpeed;
+
             if (recoilTimer < 1f)
             {
-                // Move back
-                transform.localPosition = Vector3.Lerp(originalPosition,
-                    originalPosition - transform.forward * recoilAmount, recoilTimer);
+                // Fase 1: mover hacia atrás
+                transform.localPosition = Vector3.Lerp(
+                    originalPosition,
+                    originalPosition - transform.forward * recoilAmount,
+                    recoilTimer);
             }
             else if (recoilTimer < 2f)
             {
-                // Return to original
+                // Fase 2: volver a la posición original
                 transform.localPosition = Vector3.Lerp(
                     originalPosition - transform.forward * recoilAmount,
-                    originalPosition, recoilTimer - 1f);
+                    originalPosition,
+                    recoilTimer - 1f);
             }
             else
             {
@@ -84,21 +91,19 @@ public class ShootGun : MonoBehaviour
 
     void Shoot()
     {
-        // Start recoil
+        // Iniciar animación de retroceso
         isRecoiling = true;
         recoilTimer = 0f;
 
-        // Determine fire origin
-        Vector3 origin = firePoint != null ? firePoint.position : transform.position;
-        Vector3 direction = firePoint != null ? firePoint.forward : transform.forward;
+        Vector3 origin    = firePoint != null ? firePoint.position : transform.position;
+        Vector3 direction = firePoint != null ? firePoint.forward  : transform.forward;
 
-        // Option A: Raycast (simple, no bullet visible)
+        // Raycast: daño instantáneo al impactar (funciona aunque la bala no llegue visualmente)
         RaycastHit hit;
         if (Physics.Raycast(origin, direction, out hit, range))
         {
-            Debug.Log("Hit: " + hit.collider.gameObject.name);
+            Debug.Log($"[ShootGun] Impacto en: {hit.collider.gameObject.name}");
 
-            // Check if we hit an enemy
             EnemyHealth enemy = hit.collider.GetComponent<EnemyHealth>();
             if (enemy != null)
             {
@@ -106,7 +111,7 @@ public class ShootGun : MonoBehaviour
             }
         }
 
-        // Option B: Spawn bullet (if prefab assigned)
+        // Bala física visible (solo si hay prefab asignado)
         if (bulletPrefab != null)
         {
             GameObject bullet = Instantiate(bulletPrefab, origin, Quaternion.LookRotation(direction));
@@ -118,7 +123,7 @@ public class ShootGun : MonoBehaviour
             Destroy(bullet, 3f);
         }
 
-        // Draw debug ray in Scene view
+        // Rayo de debug visible en la ventana Scene de Unity
         Debug.DrawRay(origin, direction * range, Color.red, 0.5f);
     }
 }
