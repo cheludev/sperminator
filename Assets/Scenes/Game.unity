@@ -4695,6 +4695,7 @@ MonoBehaviour:
     type: 3}
   firePoint: {fileID: 339550527}
   isLeftHand: 0
+  desktopShootKey: 323
   recoilAmount: 0.05
   recoilSpeed: 10
 --- !u!1 &684850478
@@ -6057,6 +6058,7 @@ MonoBehaviour:
     type: 3}
   firePoint: {fileID: 2138242256}
   isLeftHand: 1
+  desktopShootKey: 323
   recoilAmount: 0.05
   recoilSpeed: 10
 --- !u!1 &948898938
