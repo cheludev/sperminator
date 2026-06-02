@@ -8857,7 +8857,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clitorisPrefab: {fileID: 196036686899501440, guid: 51c2b4ef4f45f4e1386bdcac020cf91d,
     type: 3}
-  spawnInterval: 5
+  spawnInterval: 3
   distanceAhead: 4
   tubeRadius: 3
 --- !u!1 &1416676832
