@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class ShootGun : MonoBehaviour
 {
@@ -45,7 +46,14 @@ public class ShootGun : MonoBehaviour
         {
             if (Time.time >= nextFireTime)
             {
-                Shoot();
+                if (GameManager.Instance != null && GameManager.Instance.IsDoubleShotActive)
+                {
+                    StartCoroutine(ShootDoubleShotRoutine());
+                }
+                else
+                {
+                    Shoot();
+                }
                 nextFireTime = Time.time + fireRate;
             }
         }
@@ -74,6 +82,13 @@ public class ShootGun : MonoBehaviour
                 recoilTimer = 0f;
             }
         }
+    }
+
+    private IEnumerator ShootDoubleShotRoutine()
+    {
+        Shoot();
+        yield return new WaitForSeconds(0.08f);
+        Shoot();
     }
 
     void Shoot()
@@ -106,6 +121,12 @@ public class ShootGun : MonoBehaviour
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);
+            }
+
+            ClitorisCollectible clitoris = hit.collider.GetComponent<ClitorisCollectible>();
+            if (clitoris != null)
+            {
+                clitoris.Collect();
             }
         }
 

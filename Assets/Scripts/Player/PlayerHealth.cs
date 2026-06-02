@@ -8,6 +8,7 @@ public class PlayerHealth : MonoBehaviour
 
     [Header("Interfaz Visual")]
     public TextMeshPro textoVidas; // Arrastra aquí el objeto HUD_Vidas
+    public TextMeshPro textoDoubleShot; // Arrastra aquí el objeto de texto del Double Shot
 
     private AutoForwardMovement movimiento;
 
@@ -17,6 +18,22 @@ public class PlayerHealth : MonoBehaviour
         
         // Al empezar, actualizamos el texto por primera vez
         ActualizarInterfaz();
+    }
+
+    void Update()
+    {
+        if (textoDoubleShot != null)
+        {
+            if (GameManager.Instance != null && GameManager.Instance.IsDoubleShotActive)
+            {
+                textoDoubleShot.text = $"Double Shot: {GameManager.Instance.DoubleShotTimeRemaining:F1}s";
+                textoDoubleShot.color = Color.yellow;
+            }
+            else
+            {
+                textoDoubleShot.text = "";
+            }
+        }
     }
 
     public void RecibirDano()
