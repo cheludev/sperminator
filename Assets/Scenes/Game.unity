@@ -13097,7 +13097,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endScreenCanvas: {fileID: 1622901096}
-  customSound: {fileID: 8300000, guid: 80465e0a8c34144dd8b7c6d901350818, type: 3}
+  customSound: {fileID: 8300000, guid: 6260642746a894efb97f2241d4a76b70, type: 3}
   defaultSound: {fileID: 8300000, guid: 16fba6d30ed741d4a9fdd6e79ee2f3ac, type: 3}
   soundVolume: 0.5
 --- !u!135 &2078234466
