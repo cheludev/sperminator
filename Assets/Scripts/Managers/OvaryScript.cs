@@ -4,11 +4,25 @@ public class OvaryTrigger : MonoBehaviour
 {
     public GameObject endScreenCanvas;
 
+    [Header("Audio Settings")]
+    [Tooltip("Sonido personalizado para reproducir al llegar al ovario. Si no se asigna, se usará el sonido por defecto.")]
+    public AudioClip customSound;
+
+    [Tooltip("Sonido por defecto que se reproduce si customSound es nulo.")]
+    public AudioClip defaultSound;
+
+    private bool hasTriggered = false;
+
     void OnTriggerEnter(Collider other)
     {
         Debug.Log($"[OvaryTrigger] OnTriggerEnter detectado con objeto: {other.gameObject.name} (Tag: {other.gameObject.tag})");
+        if (hasTriggered) return;
+
         if (other.CompareTag("Player"))
         {
+            hasTriggered = true;
+            PlayWinSound();
+
             Debug.Log("Has llegado al ovario - Game Win!");
 
             // Detener el movimiento automático del jugador
@@ -50,4 +64,49 @@ public class OvaryTrigger : MonoBehaviour
             }
         }
     }
+
+    private void PlayWinSound()
+    {
+        AudioClip soundToPlay = customSound != null ? customSound : defaultSound;
+        if (soundToPlay != null)
+        {
+            AudioSource.PlayClipAtPoint(soundToPlay, transform.position);
+        }
+        else
+        {
+            Debug.LogWarning("[OvaryTrigger] No se ha asignado ningún clip de audio.");
+        }
+    }
+
+#if UNITY_EDITOR
+    private void Reset()
+    {
+        LoadDefaultSound();
+    }
+
+    private void OnValidate()
+    {
+        if (defaultSound == null)
+        {
+            LoadDefaultSound();
+        }
+    }
+
+    private void LoadDefaultSound()
+    {
+        string[] paths = {
+            "Assets/Audio/237928__foolboymedia__messy-splat-3a.wav",
+            "Assets/Samples/XR Interaction Toolkit/3.5.0/Starter Assets/DemoAssets/Audio/Button Pop.wav"
+        };
+
+        foreach (var path in paths)
+        {
+            defaultSound = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>(path);
+            if (defaultSound != null)
+            {
+                break;
+            }
+        }
+    }
+#endif
 }
