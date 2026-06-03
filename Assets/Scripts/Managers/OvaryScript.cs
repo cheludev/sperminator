@@ -29,7 +29,7 @@ public class OvaryTrigger : MonoBehaviour
 
             if (endScreenCanvas != null)
             {
-                // Posicionar el canvas enfrente de la cámara del jugador (a 3 unidades de distancia)
+                // Posicionar el canvas enfrente de la cámara del jugador (más cerca, a 1.2 unidades, para que no quede detrás de la pared final del túnel)
                 Vector3 playerPos = other.transform.position;
                 Vector3 playerForward = other.transform.forward;
                 
@@ -41,7 +41,7 @@ public class OvaryTrigger : MonoBehaviour
                 }
                 playerForward.Normalize();
 
-                endScreenCanvas.transform.position = playerPos + playerForward * 3f;
+                endScreenCanvas.transform.position = playerPos + playerForward * 1.2f;
                 
                 // Rotar para mirar al jugador (el forward +Z del canvas apunta alejándose del jugador, por lo que su cara frontal -Z le mira de frente)
                 endScreenCanvas.transform.rotation = Quaternion.LookRotation(playerForward);

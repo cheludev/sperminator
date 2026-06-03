@@ -7,53 +7,62 @@ public class VirusAI : MonoBehaviour
     private EnemyHealth healthSystem;
 
     [Header("Movimiento")]
-    [Tooltip("ESTA VELOCIDAD DEBE SER MAYOR A LA DEL JUGADOR")]
-    public float speed = 20f; 
+    public float speed = 12f; 
 
-   void Start()
+    // 1. Creamos una variable para saber si el virus ya está en proceso de morir
+    private bool yaEstaMuerto = false;
+
+    void Start()
     {
         healthSystem = GetComponent<EnemyHealth>();
-        
-        // Buscamos al jugador por el tag que le pusimos para las colisiones
         if (player == null)
         {
             GameObject jugadorEncontrado = GameObject.FindGameObjectWithTag("Player");
-            if (jugadorEncontrado != null)
-            {
-                player = jugadorEncontrado.transform;
-            }
-            else
-            {
-                Debug.LogError("¡No se ha encontrado ningún objeto con el tag 'Player'!");
-            }
+            if (jugadorEncontrado != null) player = jugadorEncontrado.transform;
         }
     }
 
     void Update()
     {
+        // 2. Si ya está muerto, dejamos de movernos hacia el jugador
+        if (yaEstaMuerto) return;
+
         if (player != null)
         {
-            // 1. Miramos a la cámara
             transform.LookAt(player);
-
-            // 2. Volamos directos hacia ella. 
-            // Como ya es Kinematic, nada va a frenar este movimiento.
             transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
         }
     }
     
     private void OnTriggerEnter(Collider other)
     {
+        // Si este virus ya está marcado para destruirse, ignoramos cualquier otra colisión
+        if (yaEstaMuerto) return;
+
         if (other.CompareTag("Bullet"))
         {
-            if (healthSystem != null) healthSystem.TakeDamage(10f); 
-            Destroy(other.gameObject);
+            Destroy(other.gameObject); // Destruye la bala
+
+            if (healthSystem != null) 
+            {
+                healthSystem.TakeDamage(10f); 
+                
+                // Comprobamos la salud usando 'currentHealth' con la 'c' minúscula
+                if (healthSystem.currentHealth <= 0) 
+                {
+                    // Apagamos sus colisiones en el acto para que sea inofensivo mientras se borra
+                    yaEstaMuerto = true; 
+                    GetComponent<Collider>().enabled = false; 
+                }
+            }
         }
 
         if (other.CompareTag("Player"))
         {
             PlayerHealth saludJugador = other.GetComponent<PlayerHealth>();
             if (saludJugador != null) saludJugador.RecibirDano();
+            
+            yaEstaMuerto = true; // Evita que este mismo virus te vuelva a hacer daño en el mismo frame
             Destroy(gameObject);
         }
     }
