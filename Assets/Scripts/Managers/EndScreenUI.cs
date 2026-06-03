@@ -25,6 +25,32 @@ public class EndScreenUI : MonoBehaviour
         finalScoreText.text = $"Puntuación final: {score}";
         etsKilledText.text = $"ETS eliminadas: {killed}";
         rankText.text = GetRank(score);
+
+        // Distribuir verticalmente los textos y ensanchar su contenedor (sizeDelta) para evitar auto-envoltura (wrapping)
+        if (titleText != null)
+        {
+            titleText.alignment = TextAlignmentOptions.Center;
+            titleText.rectTransform.sizeDelta = new Vector2(600f, 80f);
+            titleText.rectTransform.anchoredPosition = new Vector2(0f, 150f);
+        }
+        if (finalScoreText != null)
+        {
+            finalScoreText.alignment = TextAlignmentOptions.Center;
+            finalScoreText.rectTransform.sizeDelta = new Vector2(600f, 60f);
+            finalScoreText.rectTransform.anchoredPosition = new Vector2(0f, 50f);
+        }
+        if (etsKilledText != null)
+        {
+            etsKilledText.alignment = TextAlignmentOptions.Center;
+            etsKilledText.rectTransform.sizeDelta = new Vector2(600f, 60f);
+            etsKilledText.rectTransform.anchoredPosition = new Vector2(0f, -50f);
+        }
+        if (rankText != null)
+        {
+            rankText.alignment = TextAlignmentOptions.Center;
+            rankText.rectTransform.sizeDelta = new Vector2(600f, 80f);
+            rankText.rectTransform.anchoredPosition = new Vector2(0f, -150f);
+        }
     }
 
     string GetRank(int score)
