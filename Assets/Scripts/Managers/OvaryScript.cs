@@ -30,6 +30,12 @@ public class OvaryTrigger : MonoBehaviour
             if (autoMove != null)
                 autoMove.StopMovement();
 
+            // Detener la música de fondo del gameplay para el final
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.StopBackgroundMusic();
+            }
+
             // Ocultar la malla del ovario para que no tape el Canvas de la pantalla final
             MeshRenderer mr = GetComponent<MeshRenderer>();
             if (mr != null)

@@ -71,6 +71,12 @@ public class PlayerHealth : MonoBehaviour
         {
             movimiento.StopMovement();
         }
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.StopBackgroundMusic();
+        }
+
         Debug.LogError("💀 GAME OVER");
     }
 }

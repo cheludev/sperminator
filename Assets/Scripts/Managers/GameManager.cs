@@ -15,6 +15,15 @@ public class GameManager : MonoBehaviour
     public float DoubleShotTimeRemaining { get; private set; } = 0f;
     public bool IsDoubleShotActive => DoubleShotTimeRemaining > 0f;
 
+    [Header("Audio Settings")]
+    [Tooltip("Música de fondo (BGM) para el gameplay.")]
+    public AudioClip backgroundMusic;
+
+    [Tooltip("Música de fondo por defecto.")]
+    [SerializeField] private AudioClip defaultBackgroundMusic;
+
+    private AudioSource bgmAudioSource;
+
     void Awake()
     {
         // Singleton: solo existe uno y no se destruye al cambiar de escena
@@ -25,6 +34,11 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    void Start()
+    {
+        PlayBackgroundMusic();
     }
 
     void Update()
@@ -57,6 +71,7 @@ public class GameManager : MonoBehaviour
     {
         Score = 0;
         ETSKilled = 0;
+        PlayBackgroundMusic();
     }
 
     public void GoToEndScreen()
@@ -64,4 +79,71 @@ public class GameManager : MonoBehaviour
         // Carga la escena de pantalla final (añádela en Build Settings)
         SceneManager.LoadScene("EndScreen");
     }
+
+    public void PlayBackgroundMusic()
+    {
+        AudioClip clipToPlay = backgroundMusic != null ? backgroundMusic : defaultBackgroundMusic;
+        if (clipToPlay != null)
+        {
+            bgmAudioSource = GetComponent<AudioSource>();
+            if (bgmAudioSource == null)
+            {
+                bgmAudioSource = gameObject.AddComponent<AudioSource>();
+            }
+
+            if (bgmAudioSource.clip != clipToPlay || !bgmAudioSource.isPlaying)
+            {
+                bgmAudioSource.clip = clipToPlay;
+                bgmAudioSource.loop = true;
+                bgmAudioSource.volume = 0.3f;
+                bgmAudioSource.spatialBlend = 0f; // Sonido 2D
+                bgmAudioSource.playOnAwake = false;
+                bgmAudioSource.Play();
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[GameManager] No se ha asignado música de fondo.");
+        }
+    }
+
+    public void StopBackgroundMusic()
+    {
+        if (bgmAudioSource != null && bgmAudioSource.isPlaying)
+        {
+            bgmAudioSource.Stop();
+        }
+    }
+
+#if UNITY_EDITOR
+    private void Reset()
+    {
+        LoadDefaultBGM();
+    }
+
+    private void OnValidate()
+    {
+        if (defaultBackgroundMusic == null)
+        {
+            LoadDefaultBGM();
+        }
+    }
+
+    private void LoadDefaultBGM()
+    {
+        string[] paths = {
+            "Assets/Audio/237928__foolboymedia__messy-splat-3a.wav",
+            "Assets/Samples/XR Interaction Toolkit/3.5.0/Starter Assets/DemoAssets/Audio/Button Pop.wav"
+        };
+
+        foreach (var path in paths)
+        {
+            defaultBackgroundMusic = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>(path);
+            if (defaultBackgroundMusic != null)
+            {
+                break;
+            }
+        }
+    }
+#endif
 }
