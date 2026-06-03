@@ -4,7 +4,7 @@ public class AutoForwardMovement : MonoBehaviour
 {
     [Header("Configuración de Movimiento")]
     [Tooltip("Velocidad a la que el jugador avanza por el túnel.")]
-    public float forwardSpeed = 5f;
+    public float forwardSpeed = 20f;
     
     [Tooltip("Interruptor para pausar o reanudar el avance.")]
     public bool isMoving = true;
