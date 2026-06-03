@@ -7004,8 +7004,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   virusPrefab: {fileID: 4772763452204092039, guid: 8c2f17d8123db49bbaf493cb909bff3a,
     type: 3}
-  spawnInterval: 2
-  distanceAhead: 1
+  spawnInterval: 4
+  distanceAhead: 3
   tubeRadius: 3
 --- !u!1 &1059411748
 GameObject:
