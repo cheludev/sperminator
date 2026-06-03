@@ -12,6 +12,10 @@ public class EnemyHealth : MonoBehaviour
 
     [Header("Audio")]
     public AudioClip deathSound;
+    [Range(0f, 1f)]
+    [Tooltip("Volumen del sonido de muerte del virus.")]
+    public float deathSoundVolume = 0.5f;
+
     private static AudioClip cachedDefaultDeathSound;
 
     void Start()
@@ -51,7 +55,7 @@ public class EnemyHealth : MonoBehaviour
 
         if (clipToPlay != null)
         {
-            AudioSource.PlayClipAtPoint(clipToPlay, transform.position);
+            AudioSource.PlayClipAtPoint(clipToPlay, transform.position, deathSoundVolume);
         }
 
         // TODO: Añadir efecto de muerte (partículas, etc.)

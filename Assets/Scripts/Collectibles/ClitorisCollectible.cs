@@ -12,6 +12,10 @@ public class ClitorisCollectible : MonoBehaviour
     [Tooltip("Sonido por defecto que se reproduce si customSound es nulo.")]
     public AudioClip defaultSound;
 
+    [Range(0f, 1f)]
+    [Tooltip("Volumen de reproducción del sonido.")]
+    public float soundVolume = 0.5f;
+
     private bool isCollected = false;
 
     public void Collect()
@@ -39,7 +43,7 @@ public class ClitorisCollectible : MonoBehaviour
         AudioClip soundToPlay = customSound != null ? customSound : defaultSound;
         if (soundToPlay != null)
         {
-            AudioSource.PlayClipAtPoint(soundToPlay, transform.position);
+            AudioSource.PlayClipAtPoint(soundToPlay, transform.position, soundVolume);
         }
         else
         {

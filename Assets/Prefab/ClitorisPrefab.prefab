@@ -118,3 +118,4 @@ MonoBehaviour:
   doubleShotDuration: 30
   customSound: {fileID: 8300000, guid: 031e0764f0d3e4c7ea6bd55387478c46, type: 3}
   defaultSound: {fileID: 8300000, guid: 16fba6d30ed741d4a9fdd6e79ee2f3ac, type: 3}
+  soundVolume: 1

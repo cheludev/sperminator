@@ -22,6 +22,10 @@ public class GameManager : MonoBehaviour
     [Tooltip("Música de fondo por defecto.")]
     [SerializeField] private AudioClip defaultBackgroundMusic;
 
+    [Range(0f, 1f)]
+    [Tooltip("Volumen de la música de fondo.")]
+    public float musicVolume = 0.3f;
+
     private AudioSource bgmAudioSource;
 
     void Awake()
@@ -43,6 +47,11 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if (bgmAudioSource != null && bgmAudioSource.isPlaying)
+        {
+            bgmAudioSource.volume = musicVolume;
+        }
+
         if (DoubleShotTimeRemaining > 0f)
         {
             DoubleShotTimeRemaining -= Time.deltaTime;
@@ -95,10 +104,14 @@ public class GameManager : MonoBehaviour
             {
                 bgmAudioSource.clip = clipToPlay;
                 bgmAudioSource.loop = true;
-                bgmAudioSource.volume = 0.3f;
+                bgmAudioSource.volume = musicVolume;
                 bgmAudioSource.spatialBlend = 0f; // Sonido 2D
                 bgmAudioSource.playOnAwake = false;
                 bgmAudioSource.Play();
+            }
+            else
+            {
+                bgmAudioSource.volume = musicVolume;
             }
         }
         else
