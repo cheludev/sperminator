@@ -8954,7 +8954,7 @@ MonoBehaviour:
   backgroundMusic: {fileID: 8300000, guid: be864b35d36644184b4076ea1bdd3c89, type: 3}
   defaultBackgroundMusic: {fileID: 8300000, guid: 16fba6d30ed741d4a9fdd6e79ee2f3ac,
     type: 3}
-  musicVolume: 0.01
+  musicVolume: 0.04
 --- !u!4 &1428486223
 Transform:
   m_ObjectHideFlags: 0
